@@ -1,5 +1,4 @@
-//File name: /Users/laptopuser/Documents/cs135_codes/projects/game1024/Board.hpp
-#ifndef BOARD_H 
+#ifndef BOARD_H
 #define BOARD_H 
 class Board
 {
