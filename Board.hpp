@@ -1,7 +1,6 @@
 #ifndef BOARD_H
 #define BOARD_H 
-class Board
-{
+class Board{
 private:
     int** panel; 
        //two dimensional array with numRows rows
