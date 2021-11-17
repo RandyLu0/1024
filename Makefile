@@ -11,7 +11,7 @@
 #
 # for C++ define  CC = g++
 CC = g++ -std=c++11
-#CFLAGS  = -g -Wall
+CFLAGS  = -g -Wall
 
 # typing 'make' will invoke the first target entry in the file 
 # (in this case the default target entry)
@@ -23,7 +23,7 @@ all: run
 # To create the executable file run we need the object files
 # RunCompetition.o, Competition.o, Hare.o, Tortoise.o, and Road.o:
 run:  TestBoard.o Board.o 
-	$(CC) -o run TestBoard.o Board.o
+	$(CC) $(CFLAGS) -o run TestBoard.o Board.o
 
 # To create the object file RunCompetition.o, we need the source
 # files RunCompetition.cpp, Competition.h 

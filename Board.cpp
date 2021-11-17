@@ -1,5 +1,6 @@
 #include "Board.hpp"
 #include <iostream>
+#include <cmath>
 using std::cout;
 
 Board::Board() {
@@ -30,16 +31,14 @@ void Board::allocateMemory() {
     panel = new int* [numRows];
     for (int i = 0; i < numRows; ++i)
         panel[i] = new int[numCols];
-
     for (int i = 0; i < numRows; ++i)
         for (int j = 0; j < numCols; ++j)
             panel[i][j] = 0;
 }
 
 Board::~Board() {
-    for(int i = 0; i < numRows; i++){
+    for(int i = 0; i < numRows; i++)
         delete[] panel[i];
-    }
     delete[] panel;
 }
 
@@ -47,18 +46,34 @@ void Board::print() const{
     for(int i = 0; i < 2 * numRows + 1; i++){
         if(i % 2){
             for(int j = 0; j < numCols; j++){
-                cout << "|   ";
-                if(panel[i/2][j])
-                    cout << panel[i][j];
-                else{
-                    cout << " ";
-                }
+                int n = panel[i/2][j];
+                if(n){
+                    int digits = floor(log(n) / log(10)) + 1;
+                    switch (digits) {
+                        case 1:
+                            cout << "|   " << n;
+                            break;
+                        case 2:
+                            cout << "|  " << n;
+                            break;
+                        case 3:
+                            cout << "| " << n;
+                            break;
+                        case 4:
+                            cout << "|" << n;
+                            break;
+                    }
+                }else
+                    cout << "|    ";
             }
             cout << "|\n";
         }else{
-            for(int j = 0; j < numCols; j++)
+            for(int j = 0; j < numCols; j++) {
                 cout << "+----";
+            }
             cout << "+\n";
         }
     }
 }
+
+

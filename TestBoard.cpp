@@ -5,7 +5,7 @@ using namespace std;
 
 int main()
 {
-    Board game(3, 3);
+    Board game(8, 3);
     game.print();
 
     //coloring output in console output in c++ in linux
