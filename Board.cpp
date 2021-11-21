@@ -1,7 +1,10 @@
 #include "Board.hpp"
 #include <iostream>
 #include <cmath>
+#include <vector>
+#include <cstdlib>
 using std::cout;
+using std::vector;
 
 Board::Board() {
     max = 0;
@@ -33,7 +36,7 @@ void Board::allocateMemory() {
         panel[i] = new int[numCols];
     for (int i = 0; i < numRows; ++i)
         for (int j = 0; j < numCols; ++j)
-            panel[i][j] = 0;
+            panel[i][j] = i* 3 + 2 * j;
 }
 
 Board::~Board() {
@@ -68,12 +71,65 @@ void Board::print() const{
             }
             cout << "|\n";
         }else{
-            for(int j = 0; j < numCols; j++) {
+            for(int j = 0; j < numCols; j++)
                 cout << "+----";
-            }
             cout << "+\n";
         }
     }
 }
+
+bool Board::noAdjacentSameValue() const{
+    for (int i = 0; i < numRows; ++i)
+        for (int j = 0; j < numCols; ++j)
+            if(!panel[i][j])
+                return false;
+    for (int i = 0; i < numRows; ++i)
+        for (int j = 0; j < numCols; ++j) {
+            if (i - 1 >= 0) {
+                if (panel[i][j] == panel[i - 1][j])
+                    return false;
+            }
+            if (i + 1 < numRows) {
+                if (panel[i][j] == panel[i + 1][j])
+                    return false;
+            }
+            if (j - 1 >= 0) {
+                if (panel[i][j] == panel[i][j - 1])
+                    return false;
+            }
+            if (j + 1 < numCols) {
+                if (panel[i][j] == panel[i][j + 1])
+                    return false;
+            }
+        }
+    return true;
+}
+
+void Board::selectRandomCell(int& row, int& col){
+    int zeroes = 0;
+    vector<int> cells;
+    for (int i = 0; i < numRows; ++i)
+        for (int j = 0; j < numCols; ++j){
+            if(!panel[i][j]){
+                cells.push_back(i * numCols + j);
+                zeroes++;
+            }
+        }
+    if(!zeroes and this->noAdjacentSameValue()){
+        cout << "Game over. Try again.\n";
+    }else{
+        if(zeroes){
+            srand(1);
+            int n = cells[rand() % cells.size()];
+            row = n / numCols;
+            col = n % numCols;
+            panel[row][col] = 1;
+            this->print();
+            if(!--zeroes and this->noAdjacentSameValue())
+                cout << "Game over. Try again.\n";
+        }
+    }
+}
+
 
 
