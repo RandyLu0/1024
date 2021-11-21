@@ -9,7 +9,11 @@ int main()
     game.print();
     //cout << game.noAdjacentSameValue() << "\n";
     int n = 1, m = 1;
-    game.selectRandomCell(m,n);
+    //game.selectRandomCell(m,n);
+    game.pressUp();
+    game.pressDown();
+    game.pressLeft();
+    game.pressRight();
 
     //coloring output in console output in c++ in linux
     //https://stackoverflow.com/questions/4053837/colorizing-text-in-the-console-with-c
