@@ -3,29 +3,26 @@
 #include <cmath>
 #include <vector>
 #include <cstdlib>
+#include <iomanip>
 using std::cout;
 using std::vector;
-
+using std::setw;
 
 Board::Board() {
-    max = 0;
-    target = 32;
-    numCols = 3;
-    numRows = 3;
+    max = 0; target = 32;
+    numCols = 3; numRows = 3;
     allocateMemory();
 }
 
 Board::Board(int m) {
-    max = 0;
-    target = 32;
+    max = 0; target = 32;
     numRows = m >= 1 ? m : 3;
     numCols = m >= 1 ? m : 3;
     allocateMemory();
 }
 
 Board::Board(int m, int n) {
-    max = 0;
-    target = 32;
+    max = 0; target = 32;
     numRows = m >= 1 and n >= 1 ? m : 3;
     numCols = m >= 1 and n >= 1 ? n : 3;
     allocateMemory();
@@ -37,9 +34,8 @@ void Board::allocateMemory() {
         panel[i] = new int[numCols];
     for (int i = 0; i < numRows; ++i)
         for (int j = 0; j < numCols; ++j)
-            panel[i][j] = i % 2 ? 0 : j;
+            panel[i][j] = 0;
 }
-
 
 Board::~Board() {
     for(int i = 0; i < numRows; i++)
@@ -47,7 +43,13 @@ Board::~Board() {
     delete[] panel;
 }
 
-
+int Board::find_max() const {
+    int m;
+    for (int i = 0; i < numRows; ++i)
+        for (int j = 0; j < numCols; ++j)
+            if(panel[i][j] > m) m = panel[i][j];
+    return m;
+}
 
 void Board::print() const{
     for(int i = 0; i < 2 * numRows + 1; i++){
@@ -110,7 +112,6 @@ bool Board::noAdjacentSameValue() const{
     return true;
 }
 
-
 void Board::selectRandomCell(int& row, int& col){
     int zeroes = 0;
     vector<int> cells;
@@ -136,8 +137,6 @@ void Board::selectRandomCell(int& row, int& col){
         }
     }
 }
-
-
 
 void Board::pressUp(){
     vector<int> col;
@@ -282,6 +281,35 @@ void Board::pressRight(){
     }
     this->selectRandomCell(c,c1);
 }
+
+void Board::start(){
+    int round = 1, a,b; selectRandomCell(a,b);
+    while (true){
+        if (max == target){
+            cout << "Congragulations!";
+            break;
+        }
+        if (getchar() == '\033') {
+            getchar();
+            switch(getchar()) {
+                case 'A':
+                    cout << "Round " << setw(4) << round << ": Pressed UP. \n";
+                    pressUp(); round++; break;
+                case 'B':
+                    cout << "Round " << setw(4) << round << ": Pressed DOWN. \n";
+                    pressDown(); round++; break;
+                case 'C':
+                    cout << "Round " << setw(4) << round << ": Pressed RIGHT. \n";
+                    pressRight(); round++; break;
+                case 'D':
+                    cout << "Round " << setw(4) << round << ": Pressed LEFT. \n";
+                    pressLeft(); round++; break;
+            }
+        max = find_max();
+        }
+    }
+}
+
 
 
 
